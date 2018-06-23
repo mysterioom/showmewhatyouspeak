@@ -18,9 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->playstopButton, &QPushButton::clicked, [&]() -> void {
                 emit this->audioDeviceStateChange(isPlayed);
             });
-    connect(ui->inputDeviceBox, &QComboBox::currentIndexChanged, [&]() -> void {
-                emit this->audioDeviceChange(ui->inputDeviceBox->currentIndex());
-            });
+
+    connect(ui->inputDeviceBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+        [=](int audioDeviceId){ emit this->audioDeviceChange(audioDeviceId); });
 
     connect(this, this->audioDeviceChange, audioInput, &AudioInput::setAudioDevice);
     connect(this, this->audioDeviceStateChange, audioInput, &AudioInput::setAudioDeviceState);
