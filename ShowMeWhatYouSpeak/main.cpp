@@ -4,6 +4,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setApplicationName("Pokaż mi, co mówisz");
     MainWindow w;
     w.show();
 
