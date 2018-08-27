@@ -61,10 +61,13 @@
 SettingsDialog::SettingsDialog(
             const QList<QAudioDeviceInfo> &availableInputDevices,
             const QList<QAudioDeviceInfo> &availableOutputDevices,
+            const int &thresholdSilence,
             QWidget *parent)
     :   QDialog(parent)
     ,   m_inputDeviceComboBox(new QComboBox(this))
     ,   m_outputDeviceComboBox(new QComboBox(this))
+    ,   m_thresholdOfSilenceSlider(new QSlider(Qt::Horizontal, this))
+    ,   m_thresholdOfSilenceValueLabel(new QLabel(this))
 {
     QVBoxLayout *dialogLayout = new QVBoxLayout(this);
 
@@ -78,6 +81,16 @@ SettingsDialog::SettingsDialog(
         m_outputDeviceComboBox->addItem(device.deviceName(),
                                        QVariant::fromValue(device));
 
+    m_thresholdOfSilenceSlider->setFocusPolicy(Qt::StrongFocus);
+    m_thresholdOfSilenceSlider->setTickPosition(QSlider::TicksBothSides);
+    m_thresholdOfSilenceSlider->setTickInterval(10);
+    m_thresholdOfSilenceSlider->setSingleStep(10);
+    m_thresholdOfSilenceSlider->setMinimum(MinimumThresholdOfSilence);
+    m_thresholdOfSilenceSlider->setMaximum(MaximumThresholdOfSilence);
+    m_thresholdOfSilenceSlider->setValue(MinimumThresholdOfSilence);
+
+    m_thresholdOfSilenceValueLabel->setText(QString("%1 dB").arg(MinimumThresholdOfSilence));
+    m_thresholdOfSilenceValueLabel->setAlignment(Qt::AlignCenter);
 
     // Initialize default devices
     if (!availableInputDevices.empty())
@@ -101,11 +114,24 @@ SettingsDialog::SettingsDialog(
     dialogLayout->addLayout(outputDeviceLayout.data());
     outputDeviceLayout.take(); // ownership transferred to dialogLayout
 
+    QScopedPointer<QHBoxLayout> thresholdOfSilenceLayout(new QHBoxLayout);
+    QLabel *thresholdOfSilenceLabel = new QLabel(tr("Threshold of silence"), this);
+    thresholdOfSilenceLayout->addWidget(thresholdOfSilenceLabel);
+    thresholdOfSilenceLayout->addWidget(m_thresholdOfSilenceSlider);
+    dialogLayout->addLayout(thresholdOfSilenceLayout.data());
+    thresholdOfSilenceLayout.take(); // ownership transferred to dialogLayout
+
+    QScopedPointer<QHBoxLayout> thresholdOfSilenceValueLayout(new QHBoxLayout);
+    thresholdOfSilenceValueLayout->addWidget(m_thresholdOfSilenceValueLabel);
+    dialogLayout->addLayout(thresholdOfSilenceValueLayout.data());
+    thresholdOfSilenceValueLayout.take(); // ownership transferred to dialogLayout
+
     // Connect
     connect(m_inputDeviceComboBox, QOverload<int>::of(&QComboBox::activated),
             this, &SettingsDialog::inputDeviceChanged);
     connect(m_outputDeviceComboBox, QOverload<int>::of(&QComboBox::activated),
             this, &SettingsDialog::outputDeviceChanged);
+    connect(m_thresholdOfSilenceSlider, SIGNAL(valueChanged(int)), this, SLOT(thresholdSilenceChanged(int)));
 
     // Add standard buttons to layout
     QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
@@ -136,3 +162,8 @@ void SettingsDialog::outputDeviceChanged(int index)
     m_outputDevice = m_outputDeviceComboBox->itemData(index).value<QAudioDeviceInfo>();
 }
 
+void SettingsDialog::thresholdSilenceChanged(int value)
+{
+    m_thresholdOfSilenceValueLabel->setText(QString("%1 dB").arg(value));
+    m_thresholdSilence = value;
+}

@@ -61,7 +61,12 @@ class QCheckBox;
 class QSlider;
 class QSpinBox;
 class QGridLayout;
+class QLabel;
 QT_END_NAMESPACE
+
+
+const int MinimumThresholdOfSilence = -100; //dB
+const int MaximumThresholdOfSilence = -20; //dB
 
 /**
  * Dialog used to control settings such as the audio input / output device
@@ -74,15 +79,18 @@ class SettingsDialog : public QDialog
 public:
     SettingsDialog(const QList<QAudioDeviceInfo> &availableInputDevices,
                    const QList<QAudioDeviceInfo> &availableOutputDevices,
+                   const int &thresholdSilence,
                    QWidget *parent = 0);
     ~SettingsDialog();
 
     const QAudioDeviceInfo &inputDevice() const { return m_inputDevice; }
     const QAudioDeviceInfo &outputDevice() const { return m_outputDevice; }
+    const int &thresholdSilence() {return m_thresholdSilence; }
 
 private slots:
     void inputDeviceChanged(int index);
     void outputDeviceChanged(int index);
+    void thresholdSilenceChanged(int index);
 
 private:
     QAudioDeviceInfo m_inputDevice;
@@ -90,7 +98,9 @@ private:
 
     QComboBox *m_inputDeviceComboBox;
     QComboBox *m_outputDeviceComboBox;
-    QComboBox *m_windowFunctionComboBox;
+    QSlider *m_thresholdOfSilenceSlider;
+    QLabel *m_thresholdOfSilenceValueLabel;
+    int m_thresholdSilence;
 };
 
 #endif // SETTINGSDIALOG_H

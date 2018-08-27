@@ -89,6 +89,8 @@ public:
     const QList<QAudioDeviceInfo> &availableAudioOutputDevices() const
                                     { return m_availableAudioOutputDevices; }
 
+    const int &thresholdSilence() {return m_thresholdSilence; }
+
     QAudio::Mode mode() const { return m_mode; }
     QAudio::State state() const { return m_state; }
 
@@ -144,17 +146,13 @@ public:
      */
     qint64 dataLength() const { return m_dataLength; }
 
-    /**
-     * Set window function applied to audio data before spectral analysis.
-     */
-    void setWindowFunction(WindowFunction type);
-
 public slots:
     void startRecording();
     void startPlayback();
     void suspend();
     void setAudioInputDevice(const QAudioDeviceInfo &device);
     void setAudioOutputDevice(const QAudioDeviceInfo &device);
+    void setThresholdOfSilence(const int &value);
 
 signals:
     void stateChanged(QAudio::Mode mode, QAudio::State state);
@@ -278,6 +276,8 @@ private:
     qint64              m_spectrumPosition;
 
     int                 m_count;
+    int                 m_thresholdSilence;
+
 };
 
 #endif // ENGINE_H

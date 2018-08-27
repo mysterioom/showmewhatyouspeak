@@ -81,6 +81,7 @@ MainWidget::MainWidget(QWidget *parent)
     ,   m_settingsDialog(new SettingsDialog(
             m_engine->availableAudioInputDevices(),
             m_engine->availableAudioOutputDevices(),
+            m_engine->thresholdSilence(),
             this))
     ,   m_recordAction(0)
 {
@@ -116,7 +117,8 @@ void MainWidget::stateChanged(QAudio::Mode mode, QAudio::State state)
 
 void MainWidget::formatChanged(const QAudioFormat &format)
 {
-   infoMessage(formatToString(format), NullMessageTimeout);
+   infoMessage(QString("%1 dB").arg(m_engine->thresholdSilence()), NullMessageTimeout);
+   //infoMessage(formatToString(format), NullMessageTimeout);
 }
 
 void MainWidget::spectrumChanged(qint64 position, qint64 length,
@@ -169,6 +171,8 @@ void MainWidget::showSettingsDialog()
     if (m_settingsDialog->result() == QDialog::Accepted) {
         m_engine->setAudioInputDevice(m_settingsDialog->inputDevice());
         m_engine->setAudioOutputDevice(m_settingsDialog->outputDevice());
+        m_engine->setThresholdOfSilence((m_settingsDialog->thresholdSilence()));
+        infoMessage(QString("%1 dB").arg(m_settingsDialog->thresholdSilence()), NullMessageTimeout);
     }
 }
 

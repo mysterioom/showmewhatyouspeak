@@ -47,9 +47,9 @@ Engine::Engine(QObject *parent)
     ,   m_spectrumAnalyser()
     ,   m_spectrumPosition(0)
     ,   m_count(0)
+    ,   m_thresholdSilence(-100)
 {
     qRegisterMetaType<FrequencySpectrum>("FrequencySpectrum");
-    qRegisterMetaType<WindowFunction>("WindowFunction");
     connect(&m_spectrumAnalyser, QOverload<const FrequencySpectrum&>::of(&SpectrumAnalyser::spectrumChanged),
             this, QOverload<const FrequencySpectrum&>::of(&Engine::spectrumChanged));
 
@@ -92,11 +92,6 @@ bool Engine::initializeRecord()
 qint64 Engine::bufferLength() const
 {
     return m_bufferLength;
-}
-
-void Engine::setWindowFunction(WindowFunction type)
-{
-    m_spectrumAnalyser.setWindowFunction(type);
 }
 
 
@@ -196,7 +191,11 @@ void Engine::setAudioOutputDevice(const QAudioDeviceInfo &device)
     }
 }
 
+void Engine::setThresholdOfSilence(const int &value)
+{
+    m_thresholdSilence = value;
 
+}
 //-----------------------------------------------------------------------------
 // Private slots
 //-----------------------------------------------------------------------------
