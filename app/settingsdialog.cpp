@@ -70,7 +70,7 @@ SettingsDialog::SettingsDialog(
     ,   m_thresholdOfSilenceValueLabel(new QLabel(this))
 {
     QVBoxLayout *dialogLayout = new QVBoxLayout(this);
-
+    Q_UNUSED(thresholdSilence);
     // Populate combo boxes
 
     QAudioDeviceInfo device;
@@ -87,9 +87,9 @@ SettingsDialog::SettingsDialog(
     m_thresholdOfSilenceSlider->setSingleStep(10);
     m_thresholdOfSilenceSlider->setMinimum(MinimumThresholdOfSilence);
     m_thresholdOfSilenceSlider->setMaximum(MaximumThresholdOfSilence);
-    m_thresholdOfSilenceSlider->setValue(MinimumThresholdOfSilence);
+    m_thresholdOfSilenceSlider->setValue(InitThresholdOfSilence);
 
-    m_thresholdOfSilenceValueLabel->setText(QString("%1 dB").arg(MinimumThresholdOfSilence));
+    m_thresholdOfSilenceValueLabel->setText(QString("%1 dB").arg(InitThresholdOfSilence));
     m_thresholdOfSilenceValueLabel->setAlignment(Qt::AlignCenter);
 
     // Initialize default devices

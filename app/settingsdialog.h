@@ -65,8 +65,9 @@ class QLabel;
 QT_END_NAMESPACE
 
 
-const int MinimumThresholdOfSilence = -100; //dB
-const int MaximumThresholdOfSilence = -20; //dB
+const int MinimumThresholdOfSilence = -60; //dB
+const int MaximumThresholdOfSilence = -10; //dB
+const int InitThresholdOfSilence = -30; //dB
 
 /**
  * Dialog used to control settings such as the audio input / output device

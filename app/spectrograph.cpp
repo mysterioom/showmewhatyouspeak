@@ -113,7 +113,7 @@ void Spectrograph::paintEvent(QPaintEvent *event)
         painter.setBrush(Qt::NoBrush);
     }
 
-    QColor barColor(51, 204, 102);
+    QColor barColor(137, 64, 202);
     QColor clipColor(255, 255, 0);
 
     // Draw the outline

@@ -120,7 +120,6 @@ private:
 
     QTimer *m_redrawTimer;
 
-    QColor m_rmsColor;
     QColor m_peakColor;
 
 };

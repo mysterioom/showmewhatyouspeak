@@ -63,8 +63,6 @@ QT_FORWARD_DECLARE_CLASS(QAudioFormat)
 qint64 audioDuration(const QAudioFormat &format, qint64 bytes);
 qint64 audioLength(const QAudioFormat &format, qint64 microSeconds);
 
-QString formatToString(const QAudioFormat &format);
-
 qreal nyquistFrequency(const QAudioFormat &format);
 
 // Scale PCM value to [-1.0, 1.0]

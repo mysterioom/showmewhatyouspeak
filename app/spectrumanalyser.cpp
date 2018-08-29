@@ -156,9 +156,6 @@ SpectrumAnalyser::SpectrumAnalyser(QObject *parent)
     :   QObject(parent)
     ,   m_thread(new SpectrumAnalyserThread(this))
     ,   m_state(Idle)
-#ifdef DUMP_SPECTRUMANALYSER
-    ,   m_count(0)
-#endif
 {
     connect(m_thread, &SpectrumAnalyserThread::calculationComplete,
             this, &SpectrumAnalyser::calculationComplete);

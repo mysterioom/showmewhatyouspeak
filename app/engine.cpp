@@ -47,7 +47,7 @@ Engine::Engine(QObject *parent)
     ,   m_spectrumAnalyser()
     ,   m_spectrumPosition(0)
     ,   m_count(0)
-    ,   m_thresholdSilence(-100)
+    ,   m_thresholdSilence(-30)
 {
     qRegisterMetaType<FrequencySpectrum>("FrequencySpectrum");
     connect(&m_spectrumAnalyser, QOverload<const FrequencySpectrum&>::of(&SpectrumAnalyser::spectrumChanged),
@@ -194,7 +194,6 @@ void Engine::setAudioOutputDevice(const QAudioDeviceInfo &device)
 void Engine::setThresholdOfSilence(const int &value)
 {
     m_thresholdSilence = value;
-
 }
 //-----------------------------------------------------------------------------
 // Private slots
@@ -479,6 +478,8 @@ void Engine::calculateLevel(qint64 position, qint64 length)
     rmsLevel = qMax(qreal(0.0), rmsLevel);
     rmsLevel = qMin(qreal(1.0), rmsLevel);
     setLevel(rmsLevel, peakLevel, numSamples);
+
+    emit displaySilenceLabel(dBLevel);
 
     ENGINE_DEBUG << "Engine::calculateLevel" << "pos" << position << "len" << length
                  << "rms" << rmsLevel << "peak" << peakLevel << "dB: " << dBLevel;

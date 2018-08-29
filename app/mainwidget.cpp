@@ -78,6 +78,8 @@ MainWidget::MainWidget(QWidget *parent)
     ,   m_settingsButton(new QPushButton(this))
     ,   m_infoMessage(new QLabel(tr("Select a mode to begin"), this))
     ,   m_infoMessageTimerId(NullTimerId)
+    ,   m_silence(new QLabel(tr("SILENCE"), this))
+    ,   m_basicFrequencyInfoMessage(new QLabel(tr("Basic voice frequency: 0 Hz"), this))
     ,   m_settingsDialog(new SettingsDialog(
             m_engine->availableAudioInputDevices(),
             m_engine->availableAudioOutputDevices(),
@@ -115,12 +117,6 @@ void MainWidget::stateChanged(QAudio::Mode mode, QAudio::State state)
     }
 }
 
-void MainWidget::formatChanged(const QAudioFormat &format)
-{
-   infoMessage(QString("%1 dB").arg(m_engine->thresholdSilence()), NullMessageTimeout);
-   //infoMessage(formatToString(format), NullMessageTimeout);
-}
-
 void MainWidget::spectrumChanged(qint64 position, qint64 length,
                                  const FrequencySpectrum &spectrum)
 {
@@ -142,6 +138,14 @@ void MainWidget::infoMessage(const QString &message, int timeoutMs)
         m_infoMessageTimerId = startTimer(timeoutMs);
 }
 
+void MainWidget::displaySilenceLabel(qreal dBLevel)
+{
+    if(dBLevel <= m_engine->thresholdSilence()){
+        m_silence->setText("SILENCE");
+    } else {
+        m_silence->setText("");
+    }
+}
 void MainWidget::errorMessage(const QString &heading, const QString &detail)
 {
     QMessageBox::warning(this, heading, detail, QMessageBox::Close);
@@ -172,7 +176,6 @@ void MainWidget::showSettingsDialog()
         m_engine->setAudioInputDevice(m_settingsDialog->inputDevice());
         m_engine->setAudioOutputDevice(m_settingsDialog->outputDevice());
         m_engine->setThresholdOfSilence((m_settingsDialog->thresholdSilence()));
-        infoMessage(QString("%1 dB").arg(m_settingsDialog->thresholdSilence()), NullMessageTimeout);
     }
 }
 
@@ -203,10 +206,18 @@ void MainWidget::createUi()
     // Spectrograph and level meter
 
     QScopedPointer<QHBoxLayout> analysisLayout(new QHBoxLayout);
-    analysisLayout->addWidget(m_spectrograph);
     analysisLayout->addWidget(m_levelMeter);
+    analysisLayout->addWidget(m_spectrograph);
     windowLayout->addLayout(analysisLayout.data());
     analysisLayout.take();
+
+    QScopedPointer<QHBoxLayout> infoLayout(new QHBoxLayout);
+    m_silence->setStyleSheet("font-weight: bold; color: red");
+    m_silence->setAlignment(Qt::AlignRight);
+    infoLayout->addWidget(m_basicFrequencyInfoMessage);
+    infoLayout->addWidget(m_silence);
+    windowLayout->addLayout(infoLayout.data());
+    infoLayout.take();
 
     // Button panel
 
@@ -275,9 +286,6 @@ void MainWidget::connectUi()
     connect(m_engine, &Engine::stateChanged,
             this, &MainWidget::stateChanged);
 
-    connect(m_engine, &Engine::formatChanged,
-            this, &MainWidget::formatChanged);
-
     connect(m_engine, &Engine::dataLengthChanged,
             this, &MainWidget::updateButtonStates);
 
@@ -298,6 +306,9 @@ void MainWidget::connectUi()
 
     connect(m_engine, &Engine::errorMessage,
             this, &MainWidget::errorMessage);
+
+    connect(m_engine, &Engine::displaySilenceLabel,
+            this, &MainWidget::displaySilenceLabel);
 
     connect(m_spectrograph, &Spectrograph::infoMessage,
             this, &MainWidget::infoMessage);

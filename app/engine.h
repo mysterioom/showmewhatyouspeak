@@ -162,6 +162,7 @@ signals:
      */
     void infoMessage(const QString &message, int durationMs);
 
+    void displaySilenceLabel(qreal dBLevel);
     /**
      * Error message for modal display
      */

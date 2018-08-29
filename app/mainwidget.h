@@ -89,11 +89,11 @@ public:
 
 public slots:
     void stateChanged(QAudio::Mode mode, QAudio::State state);
-    void formatChanged(const QAudioFormat &format);
     void spectrumChanged(qint64 position, qint64 length,
                          const FrequencySpectrum &spectrum);
     void infoMessage(const QString &message, int timeoutMs);
     void errorMessage(const QString &heading, const QString &detail);
+    void displaySilenceLabel(qreal dBLevel);
     void audioPositionChanged(qint64 position);
 
 private slots:
@@ -124,6 +124,10 @@ private:
 
     QLabel*                 m_infoMessage;
     int                     m_infoMessageTimerId;
+
+    int                     m_thresholdSilence;
+    QLabel*                 m_silence;
+    QLabel*                 m_basicFrequencyInfoMessage;
 
     SettingsDialog*         m_settingsDialog;
     ToneGeneratorDialog*    m_toneGeneratorDialog;
