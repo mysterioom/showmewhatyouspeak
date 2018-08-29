@@ -52,6 +52,8 @@ Engine::Engine(QObject *parent)
     qRegisterMetaType<FrequencySpectrum>("FrequencySpectrum");
     connect(&m_spectrumAnalyser, QOverload<const FrequencySpectrum&>::of(&SpectrumAnalyser::spectrumChanged),
             this, QOverload<const FrequencySpectrum&>::of(&Engine::spectrumChanged));
+    connect(&m_spectrumAnalyser, &SpectrumAnalyser::baseFrequencyChanged,
+            this, &Engine::baseFrequencyChanged);
 
     // This code might misinterpret things like "-something -category".  But
     // it's unlikely that that needs to be supported so we'll let it go.

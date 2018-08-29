@@ -125,6 +125,8 @@ void SpectrumAnalyserThread::calculateSpectrum(const QByteArray &buffer,
     // Calculate the FFT
     m_fft->calculateFFT(m_output.data(), m_input.data());
 
+    int _baseFrequency = 0;
+    int _maxAmplitude = 0;
     // Analyze output to obtain amplitude and phase for each frequency
     for (int i=2; i<=m_numSamples/2; ++i) {
         // Calculate frequency of this complex sample
@@ -143,8 +145,14 @@ void SpectrumAnalyserThread::calculateSpectrum(const QByteArray &buffer,
         amplitude = qMax(qreal(0.0), amplitude);
         amplitude = qMin(qreal(1.0), amplitude);
         m_spectrum[i].amplitude = amplitude;
+
+        if(amplitude > _maxAmplitude){
+            _maxAmplitude = amplitude;
+            _baseFrequency = m_spectrum[i].frequency;
+        }
     }
-    emit calculationComplete(m_spectrum);
+
+    emit calculationComplete(m_spectrum, _baseFrequency);
 }
 
 
@@ -228,10 +236,13 @@ void SpectrumAnalyser::cancelCalculation()
 // Private slots
 //-----------------------------------------------------------------------------
 
-void SpectrumAnalyser::calculationComplete(const FrequencySpectrum &spectrum)
+void SpectrumAnalyser::calculationComplete(const FrequencySpectrum &spectrum, int baseFrequency)
 {
     Q_ASSERT(Idle != m_state);
-    if (Busy == m_state)
+    if (Busy == m_state){
         emit spectrumChanged(spectrum);
+        emit baseFrequencyChanged(baseFrequency);
+    }
+
     m_state = Idle;
 }

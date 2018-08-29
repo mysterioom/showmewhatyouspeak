@@ -84,15 +84,13 @@ public slots:
                            int bytesPerSample);
 
 signals:
-    void calculationComplete(const FrequencySpectrum &spectrum);
+    void calculationComplete(const FrequencySpectrum &spectrum, int baseFrequency);
 
 private:
     void calculateWindow();
 
 private:
-#ifndef DISABLE_FFT
     FFTRealWrapper*                             m_fft;
-#endif
 
     const int                                   m_numSamples;
 
@@ -155,9 +153,10 @@ public:
 
 signals:
     void spectrumChanged(const FrequencySpectrum &spectrum);
+    void baseFrequencyChanged(int baseFrequency);
 
 private slots:
-    void calculationComplete(const FrequencySpectrum &spectrum);
+    void calculationComplete(const FrequencySpectrum &spectrum, int baseFrequency);
 
 private:
     void calculateWindow();

@@ -94,6 +94,7 @@ public slots:
     void infoMessage(const QString &message, int timeoutMs);
     void errorMessage(const QString &heading, const QString &detail);
     void displaySilenceLabel(qreal dBLevel);
+    void baseFrequencyChanged(int baseFrequency);
     void audioPositionChanged(qint64 position);
 
 private slots:

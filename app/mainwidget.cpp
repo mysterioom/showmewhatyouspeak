@@ -76,7 +76,7 @@ MainWidget::MainWidget(QWidget *parent)
     ,   m_pauseButton(new QPushButton(this))
     ,   m_playButton(new QPushButton(this))
     ,   m_settingsButton(new QPushButton(this))
-    ,   m_infoMessage(new QLabel(tr("Select a mode to begin"), this))
+    ,   m_infoMessage(new QLabel(tr("Show me, what you speak!"), this))
     ,   m_infoMessageTimerId(NullTimerId)
     ,   m_silence(new QLabel(tr("SILENCE"), this))
     ,   m_basicFrequencyInfoMessage(new QLabel(tr("Basic voice frequency: 0 Hz"), this))
@@ -140,12 +140,22 @@ void MainWidget::infoMessage(const QString &message, int timeoutMs)
 
 void MainWidget::displaySilenceLabel(qreal dBLevel)
 {
-    if(dBLevel <= m_engine->thresholdSilence()){
+    int thresholdSilence = m_engine->thresholdSilence();
+    if(dBLevel <= thresholdSilence){
         m_silence->setText("SILENCE");
     } else {
         m_silence->setText("");
     }
 }
+
+void MainWidget::baseFrequencyChanged(int baseFrequency)
+{
+    m_basicFrequencyInfoMessage->setText(QString("Basic voice frequency: %1 Hz")
+                                         .arg(baseFrequency));
+
+    //TODO - interval in ms
+}
+
 void MainWidget::errorMessage(const QString &heading, const QString &detail)
 {
     QMessageBox::warning(this, heading, detail, QMessageBox::Close);
@@ -309,6 +319,9 @@ void MainWidget::connectUi()
 
     connect(m_engine, &Engine::displaySilenceLabel,
             this, &MainWidget::displaySilenceLabel);
+
+    connect(m_engine, &Engine::baseFrequencyChanged,
+            this, &MainWidget::baseFrequencyChanged);
 
     connect(m_spectrograph, &Spectrograph::infoMessage,
             this, &MainWidget::infoMessage);

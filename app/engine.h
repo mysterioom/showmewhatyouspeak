@@ -163,6 +163,7 @@ signals:
     void infoMessage(const QString &message, int durationMs);
 
     void displaySilenceLabel(qreal dBLevel);
+    void baseFrequencyChanged(int baseFrequency);
     /**
      * Error message for modal display
      */

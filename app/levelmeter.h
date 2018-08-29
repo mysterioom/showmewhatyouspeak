@@ -77,11 +77,6 @@ private slots:
     void redrawTimerExpired();
 
 private:
-    /**
-     * Height of RMS level bar.
-     * Range 0.0 - 1.0.
-     */
-    qreal m_rmsLevel;
 
     /**
      * Most recent peak level.
