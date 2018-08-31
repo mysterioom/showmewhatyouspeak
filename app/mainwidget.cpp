@@ -235,13 +235,13 @@ void MainWidget::createUi()
     m_recordButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_recordButton->setMinimumSize(buttonSize);
 
-    m_pauseIcon = style()->standardIcon(QStyle::SP_MediaPause);
+    m_pauseIcon = QIcon(":/images/pause.png");
     m_pauseButton->setIcon(m_pauseIcon);
     m_pauseButton->setEnabled(false);
     m_pauseButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_pauseButton->setMinimumSize(buttonSize);
 
-    m_playIcon = style()->standardIcon(QStyle::SP_MediaPlay);
+    m_playIcon = QIcon(":/images/play.png");
     m_playButton->setIcon(m_playIcon);
     m_playButton->setEnabled(false);
     m_playButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
