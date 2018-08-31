@@ -9,7 +9,6 @@ QT       += multimedia widgets
 SOURCES  += main.cpp \
             engine.cpp \
             frequencyspectrum.cpp \
-            levelmeter.cpp \
             mainwidget.cpp \
             settingsdialog.cpp \
             spectrograph.cpp \
@@ -19,7 +18,6 @@ SOURCES  += main.cpp \
 
 HEADERS  += engine.h \
             frequencyspectrum.h \
-            levelmeter.h \
             mainwidget.h \
             settingsdialog.h \
             spectrograph.h \

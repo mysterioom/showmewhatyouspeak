@@ -49,7 +49,6 @@
 ****************************************************************************/
 
 #include "engine.h"
-#include "levelmeter.h"
 #include "mainwidget.h"
 #include "settingsdialog.h"
 #include "spectrograph.h"
@@ -71,7 +70,6 @@ MainWidget::MainWidget(QWidget *parent)
     :   QWidget(parent)
     ,   m_engine(new Engine(this))
     ,   m_spectrograph(new Spectrograph(this))
-    ,   m_levelMeter(new LevelMeter(this))
     ,   m_recordButton(new QPushButton(this))
     ,   m_pauseButton(new QPushButton(this))
     ,   m_playButton(new QPushButton(this))
@@ -112,7 +110,6 @@ void MainWidget::stateChanged(QAudio::Mode mode, QAudio::State state)
     if (QAudio::ActiveState != state &&
         QAudio::SuspendedState != state &&
         QAudio::InterruptedState != state) {
-        m_levelMeter->reset();
         m_spectrograph->reset();
     }
 }
@@ -216,7 +213,6 @@ void MainWidget::createUi()
     // Spectrograph and level meter
 
     QScopedPointer<QHBoxLayout> analysisLayout(new QHBoxLayout);
-    analysisLayout->addWidget(m_levelMeter);
     analysisLayout->addWidget(m_spectrograph);
     windowLayout->addLayout(analysisLayout.data());
     analysisLayout.take();
@@ -305,9 +301,6 @@ void MainWidget::connectUi()
     connect(m_engine, &Engine::playPositionChanged,
             this, &MainWidget::audioPositionChanged);
 
-    connect(m_engine, &Engine::levelChanged,
-            m_levelMeter, &LevelMeter::levelChanged);
-
     connect(m_engine, QOverload<qint64, qint64, const FrequencySpectrum&>::of(&Engine::spectrumChanged),
             this, QOverload<qint64, qint64, const FrequencySpectrum&>::of(&MainWidget::spectrumChanged));
 
@@ -352,6 +345,5 @@ void MainWidget::updateButtonStates()
 void MainWidget::reset()
 {
     m_engine->reset();
-    m_levelMeter->reset();
     m_spectrograph->reset();
 }

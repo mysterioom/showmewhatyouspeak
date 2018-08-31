@@ -57,7 +57,6 @@
 
 class Engine;
 class FrequencySpectrum;
-class LevelMeter;
 class ProgressBar;
 class SettingsDialog;
 class Spectrograph;
@@ -109,9 +108,7 @@ private:
 
 private:
     Engine*                 m_engine;
-
     Spectrograph*           m_spectrograph;
-    LevelMeter*             m_levelMeter;
 
     QPushButton*            m_modeButton;
     QPushButton*            m_recordButton;
