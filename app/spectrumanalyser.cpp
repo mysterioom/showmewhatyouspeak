@@ -187,7 +187,7 @@ void SpectrumAnalyser::calculate(const QByteArray &buffer,
                                   Q_ARG(int, format.sampleRate()),
                                   Q_ARG(int, bytesPerSample));
         Q_ASSERT(b);
-        Q_UNUSED(b) // suppress warnings in release builds
+        Q_UNUSED(b);
 
     }
 }

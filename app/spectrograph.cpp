@@ -86,7 +86,7 @@ void Spectrograph::setParams(int numBars, qreal lowFreq, qreal highFreq)
 void Spectrograph::timerEvent(QTimerEvent *event)
 {
     Q_ASSERT(event->timerId() == m_timerId);
-    Q_UNUSED(event) // suppress warnings in release builds
+    Q_UNUSED(event);
     killTimer(m_timerId);
     m_timerId = NullTimerId;
     m_barSelected = NullIndex;
@@ -107,14 +107,13 @@ void Spectrograph::paintEvent(QPaintEvent *event)
         QRect regionRect = rect();
         regionRect.setLeft(m_barSelected * rect().width() / numBars);
         regionRect.setWidth(rect().width() / numBars);
-        QColor regionColor(202, 202, 64);
+        QColor regionColor(115, 115, 115);
         painter.setBrush(Qt::DiagCrossPattern);
         painter.fillRect(regionRect, regionColor);
         painter.setBrush(Qt::NoBrush);
     }
 
     QColor barColor(230, 230, 230);
-    QColor clipColor(255, 255, 0);
 
     // Draw the outline
     const QColor gridColor = barColor.darker();
@@ -150,7 +149,6 @@ void Spectrograph::paintEvent(QPaintEvent *event)
 
     barColor = barColor.lighter();
     barColor.setAlphaF(0.75);
-    clipColor.setAlphaF(0.75);
 
     // Draw the bars
     if (numBars) {
@@ -173,9 +171,6 @@ void Spectrograph::paintEvent(QPaintEvent *event)
             bar.setBottom(rect().bottom() - gapWidth);
 
             QColor color = barColor;
-            if (m_bars[i].clipped)
-                color = clipColor;
-
             painter.fillRect(bar, color);
         }
     }

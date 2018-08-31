@@ -161,7 +161,7 @@ void MainWidget::errorMessage(const QString &heading, const QString &detail)
 void MainWidget::timerEvent(QTimerEvent *event)
 {
     Q_ASSERT(event->timerId() == m_infoMessageTimerId);
-    Q_UNUSED(event) // suppress warnings in release builds
+    Q_UNUSED(event)
     killTimer(m_infoMessageTimerId);
     m_infoMessageTimerId = NullTimerId;
     m_infoMessage->setText("");
