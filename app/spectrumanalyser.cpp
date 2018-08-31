@@ -59,9 +59,7 @@
 
 SpectrumAnalyserThread::SpectrumAnalyserThread(QObject *parent)
     :   QObject(parent)
-#ifndef DISABLE_FFT
     ,   m_fft(new FFTRealWrapper)
-#endif
     ,   m_numSamples(SpectrumLengthSamples)
     ,   m_window(SpectrumLengthSamples, 0.0)
     ,   m_input(SpectrumLengthSamples, 0.0)
@@ -73,9 +71,7 @@ SpectrumAnalyserThread::SpectrumAnalyserThread(QObject *parent)
 
 SpectrumAnalyserThread::~SpectrumAnalyserThread()
 {
-#ifndef DISABLE_FFT
     delete m_fft;
-#endif
 }
 
 void SpectrumAnalyserThread::calculateWindow()

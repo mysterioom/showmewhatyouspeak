@@ -74,7 +74,7 @@ MainWidget::MainWidget(QWidget *parent)
     ,   m_pauseButton(new QPushButton(this))
     ,   m_playButton(new QPushButton(this))
     ,   m_settingsButton(new QPushButton(this))
-    ,   m_infoMessage(new QLabel(tr("Show me, what you speak!"), this))
+    ,   m_infoMessage(new QLabel(tr(""), this))
     ,   m_infoMessageTimerId(NullTimerId)
     ,   m_silence(new QLabel(tr("SILENCE"), this))
     ,   m_basicFrequencyInfoMessage(new QLabel(tr("Basic voice frequency: 0 Hz"), this))
@@ -201,7 +201,7 @@ void MainWidget::initializeRecord()
 void MainWidget::createUi()
 {
     setWindowTitle(tr("Show me, what you speak!"));
-    //setWindowIcon(QIcon(":/images/burza.jpg"));
+    setWindowIcon(QIcon(":/images/icon.png"));
     QVBoxLayout *windowLayout = new QVBoxLayout(this);
 
     m_infoMessage->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);

@@ -55,7 +55,6 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     app.setApplicationName("Settings");
-
     MainWidget w;
     w.show();
 
