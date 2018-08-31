@@ -63,7 +63,6 @@ SpectrumAnalyserThread::SpectrumAnalyserThread(QObject *parent)
     ,   m_fft(new FFTRealWrapper)
 #endif
     ,   m_numSamples(SpectrumLengthSamples)
-    ,   m_windowFunction(DefaultWindowFunction)
     ,   m_window(SpectrumLengthSamples, 0.0)
     ,   m_input(SpectrumLengthSamples, 0.0)
     ,   m_output(SpectrumLengthSamples, 0.0)
@@ -79,27 +78,13 @@ SpectrumAnalyserThread::~SpectrumAnalyserThread()
 #endif
 }
 
-void SpectrumAnalyserThread::setWindowFunction(WindowFunction type)
-{
-    m_windowFunction = type;
-    calculateWindow();
-}
-
 void SpectrumAnalyserThread::calculateWindow()
 {
     for (int i=0; i<m_numSamples; ++i) {
         DataType x = 0.0;
 
-        switch (m_windowFunction) {
-        case NoWindow:
-            x = 1.0;
-            break;
-        case HannWindow:
-            x = 0.5 * (1 - qCos((2 * M_PI * i) / (m_numSamples - 1)));
-            break;
-        default:
-            Q_ASSERT(false);
-        }
+        //hann window
+        x = 0.5 * (1 - qCos((2 * M_PI * i) / (m_numSamples - 1)));
 
         m_window[i] = x;
     }
@@ -178,15 +163,6 @@ SpectrumAnalyser::~SpectrumAnalyser()
 //-----------------------------------------------------------------------------
 // Public functions
 //-----------------------------------------------------------------------------
-
-void SpectrumAnalyser::setWindowFunction(WindowFunction type)
-{
-    const bool b = QMetaObject::invokeMethod(m_thread, "setWindowFunction",
-                              Qt::AutoConnection,
-                              Q_ARG(WindowFunction, type));
-    Q_ASSERT(b);
-    Q_UNUSED(b) // suppress warnings in release builds
-}
 
 void SpectrumAnalyser::calculate(const QByteArray &buffer,
                          const QAudioFormat &format)

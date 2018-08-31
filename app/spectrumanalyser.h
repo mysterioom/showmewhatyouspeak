@@ -78,7 +78,6 @@ public:
     ~SpectrumAnalyserThread();
 
 public slots:
-    void setWindowFunction(WindowFunction type);
     void calculateSpectrum(const QByteArray &buffer,
                            int inputFrequency,
                            int bytesPerSample);
@@ -93,8 +92,6 @@ private:
     FFTRealWrapper*                             m_fft;
 
     const int                                   m_numSamples;
-
-    WindowFunction                              m_windowFunction;
 
     typedef FFTRealFixLenParam::DataType        DataType;
     QVector<DataType>                           m_window;
@@ -120,10 +117,6 @@ public:
     ~SpectrumAnalyser();
 
 public:
-    /*
-     * Set the windowing function which is applied before calculating the FFT
-     */
-    void setWindowFunction(WindowFunction type);
 
     /*
      * Calculate a frequency spectrum

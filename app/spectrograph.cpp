@@ -113,7 +113,7 @@ void Spectrograph::paintEvent(QPaintEvent *event)
         painter.setBrush(Qt::NoBrush);
     }
 
-    QColor barColor(137, 64, 202);
+    QColor barColor(230, 230, 230);
     QColor clipColor(255, 255, 0);
 
     // Draw the outline
@@ -235,7 +235,7 @@ void Spectrograph::updateBars()
 
 void Spectrograph::selectBar(int index) {
     const QPair<qreal, qreal> frequencyRange = barRange(index);
-    const QString message = QString("%1 - %2 Hz")
+    const QString message = QString("Selected frequencies: %1 - %2 Hz")
                                 .arg(frequencyRange.first)
                                 .arg(frequencyRange.second);
     emit infoMessage(message, BarSelectionInterval);

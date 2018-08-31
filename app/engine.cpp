@@ -378,9 +378,9 @@ bool Engine::selectFormat()
         QAudioFormat format;
         format.setByteOrder(QAudioFormat::LittleEndian);
         format.setCodec("audio/pcm");
-        format.setSampleSize(16);
+        format.setSampleSize(AudioSampleSize);
         format.setSampleType(QAudioFormat::SignedInt);
-        format.setSampleRate(44100);
+        format.setSampleRate(AudioSampleRate);
         int channels;
 
         foreach (channels, channelsList) {

@@ -56,6 +56,11 @@
 
 QT_FORWARD_DECLARE_CLASS(QAudioFormat)
 
+
+const int    AudioSampleRate        = 22050; //Hz
+const int    AudioSampleSize         = 16; //bit
+
+
 //-----------------------------------------------------------------------------
 // Miscellaneous utility functions
 //-----------------------------------------------------------------------------

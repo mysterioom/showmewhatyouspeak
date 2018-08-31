@@ -63,10 +63,10 @@
 const int    SpectrumLengthSamples  = PowerOfTwo<FFTLengthPowerOfTwo>::Result;
 
 // Number of bands in the frequency spectrum
-const int    SpectrumNumBands       = 100;
+const int    SpectrumNumBands       = 22;
 
 const qreal  SpectrumLowFreq        = 0.0; // Hz
-const qreal  SpectrumHighFreq       = 2000.0; // Hz
+const qreal  SpectrumHighFreq       = 11000; // Hz
 
 // Waveform window size in microseconds
 const qint64 WaveformWindowDuration = 500 * 1000;
@@ -83,30 +83,5 @@ const qreal SpectrumAnalyserMultiplier = 0.15;
 
 // Disable message timeout
 const int   NullMessageTimeout      = -1;
-
-
-//-----------------------------------------------------------------------------
-// Types and data structures
-//-----------------------------------------------------------------------------
-
-enum WindowFunction {
-    NoWindow,
-    HannWindow
-};
-
-const WindowFunction DefaultWindowFunction = HannWindow;
-
-struct Tone
-{
-    Tone(qreal freq = 0.0, qreal amp = 0.0)
-    :   frequency(freq), amplitude(amp)
-    { }
-
-    // Start and end frequencies for swept tone generation
-    qreal   frequency;
-
-    // Amplitude in range [0.0, 1.0]
-    qreal   amplitude;
-};
 
 #endif
