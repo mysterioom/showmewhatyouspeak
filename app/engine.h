@@ -52,7 +52,6 @@
 #define ENGINE_H
 
 #include "spectrumanalyser.h"
-#include "wavfile.h"
 
 #include <QAudioDeviceInfo>
 #include <QAudioFormat>
@@ -244,8 +243,6 @@ private:
 private:
     QAudio::Mode        m_mode;
     QAudio::State       m_state;
-
-    WavFile*            m_analysisFile;
 
     QAudioFormat        m_format;
 

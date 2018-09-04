@@ -25,7 +25,6 @@ Engine::Engine(QObject *parent)
     :   QObject(parent)
     ,   m_mode(QAudio::AudioInput)
     ,   m_state(QAudio::StoppedState)
-    ,   m_analysisFile(0)
     ,   m_availableAudioInputDevices
             (QAudioDeviceInfo::availableDevices(QAudio::AudioInput))
     ,   m_audioInputDevice(QAudioDeviceInfo::defaultInputDevice())
@@ -311,8 +310,6 @@ void Engine::reset()
     stopPlayback();
     setState(QAudio::AudioInput, QAudio::StoppedState);
     setFormat(QAudioFormat());
-    delete m_analysisFile;
-    m_analysisFile = 0;
     m_buffer.clear();
     m_bufferPosition = 0;
     m_bufferLength = 0;

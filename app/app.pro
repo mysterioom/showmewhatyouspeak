@@ -11,8 +11,7 @@ SOURCES  += main.cpp \
             settingsdialog.cpp \
             spectrograph.cpp \
             spectrumanalyser.cpp \
-            utils.cpp \
-            wavfile.cpp
+            utils.cpp
 
 HEADERS  += engine.h \
             frequencyspectrum.h \
@@ -20,8 +19,7 @@ HEADERS  += engine.h \
             settingsdialog.h \
             spectrograph.h \
             spectrumanalyser.h \
-            utils.h\
-            wavfile.h
+            utils.h
 
 INCLUDEPATH += ../fftreal
 DEPENDPATH += $${INCLUDEPATH}
