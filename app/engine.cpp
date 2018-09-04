@@ -13,13 +13,7 @@
 
 const qint64 BufferDurationUs       = 60 * 1000000; //60 sekund
 const int    NotifyIntervalMs       = 100;
-
-// Size of the level calculation window in microseconds
 const int    LevelWindowUs          = 0.1 * 1000000;
-
-//-----------------------------------------------------------------------------
-// Constructor and destructor
-//-----------------------------------------------------------------------------
 
 Engine::Engine(QObject *parent)
     :   QObject(parent)
@@ -54,8 +48,6 @@ Engine::Engine(QObject *parent)
     connect(&m_spectrumAnalyser, &SpectrumAnalyser::baseFrequencyChanged,
             this, &Engine::baseFrequencyChanged);
 
-    // This code might misinterpret things like "-something -category".  But
-    // it's unlikely that that needs to be supported so we'll let it go.
     QStringList arguments = QCoreApplication::instance()->arguments();
     for (int i = 0; i < arguments.count(); ++i) {
         if (arguments.at(i) == QStringLiteral("--"))
@@ -79,14 +71,9 @@ Engine::~Engine()
 
 }
 
-//-----------------------------------------------------------------------------
-// Public functions
-//-----------------------------------------------------------------------------
-
 bool Engine::initializeRecord()
 {
     reset();
-    ENGINE_DEBUG << "Engine::initializeRecord";
     return initialize();
 }
 
@@ -94,11 +81,6 @@ qint64 Engine::bufferLength() const
 {
     return m_bufferLength;
 }
-
-
-//-----------------------------------------------------------------------------
-// Public slots
-//-----------------------------------------------------------------------------
 
 void Engine::startRecording()
 {
@@ -134,11 +116,6 @@ void Engine::startPlayback()
     if (m_audioOutput) {
         if (QAudio::AudioOutput == m_mode &&
             QAudio::SuspendedState == m_state) {
-
-            // The Windows backend seems to internally go back into ActiveState
-            // while still returning SuspendedState, so to ensure that it doesn't
-            // ignore the resume() call, we first re-suspend
-
             m_audioOutput->suspend();
             m_audioOutput->resume();
         } else {
@@ -196,9 +173,6 @@ void Engine::setThresholdOfSilence(const int &value)
 {
     m_thresholdSilence = value;
 }
-//-----------------------------------------------------------------------------
-// Private slots
-//-----------------------------------------------------------------------------
 
 void Engine::audioNotify()
 {
@@ -234,9 +208,6 @@ void Engine::audioNotify()
 
 void Engine::audioStateChanged(QAudio::State state)
 {
-    ENGINE_DEBUG << "Engine::audioStateChanged from" << m_state
-                 << "to" << state;
-
     if (QAudio::IdleState == state) {
         stopPlayback();
     } else {
@@ -282,14 +253,8 @@ void Engine::audioDataReady()
 
 void Engine::spectrumChanged(const FrequencySpectrum &spectrum)
 {
-    ENGINE_DEBUG << "Engine::spectrumChanged" << "pos" << m_spectrumPosition;
     emit spectrumChanged(m_spectrumPosition, m_spectrumBufferLength, spectrum);
 }
-
-
-//-----------------------------------------------------------------------------
-// Private functions
-//-----------------------------------------------------------------------------
 
 void Engine::resetAudioDevices()
 {
@@ -345,11 +310,6 @@ bool Engine::initialize()
       emit errorMessage(tr("No common input / output format found"), "");
     }
 
-    ENGINE_DEBUG << "Engine::initialize" << "m_bufferLength" << m_bufferLength;
-    ENGINE_DEBUG << "Engine::initialize" << "m_dataLength" << m_dataLength;
-    ENGINE_DEBUG << "Engine::initialize" << "format" << m_format;
-    ENGINE_DEBUG << "Engine::initialize" << "m_audioOutputCategory" << m_audioOutputCategory;
-
     return result;
 }
 
@@ -370,7 +330,6 @@ bool Engine::selectFormat()
         channelsList += m_audioOutputDevice.supportedChannelCounts();
         channelsList = channelsList.toSet().toList();
         qSort(channelsList);
-        ENGINE_DEBUG << "Engine::initialize channelsList" << channelsList;
 
         QAudioFormat format;
         format.setByteOrder(QAudioFormat::LittleEndian);
@@ -384,9 +343,6 @@ bool Engine::selectFormat()
             format.setChannelCount(channels);
             const bool inputSupport = m_audioInputDevice.isFormatSupported(format);
             const bool outputSupport = m_audioOutputDevice.isFormatSupported(format);
-            ENGINE_DEBUG << "Engine::initialize checking " << format
-                         << "input" << inputSupport
-                         << "output" << outputSupport;
             if (inputSupport && outputSupport) {
                 foundSupportedFormat = true;
                 break;
@@ -479,21 +435,12 @@ void Engine::calculateLevel(qint64 position, qint64 length)
     setLevel(rmsLevel, peakLevel, numSamples);
 
     emit displaySilenceLabel(dBLevel);
-
-    ENGINE_DEBUG << "Engine::calculateLevel" << "pos" << position << "len" << length
-                 << "rms" << rmsLevel << "peak" << peakLevel << "dB: " << dBLevel;
 }
 
 void Engine::calculateSpectrum(qint64 position)
 {
     Q_ASSERT(position + m_spectrumBufferLength <= m_bufferPosition + m_dataLength);
     Q_ASSERT(0 == m_spectrumBufferLength % 2); // constraint of FFT algorithm
-
-    // QThread::currentThread is marked 'for internal use only', but
-    // we're only using it for debug output here, so it's probably OK :)
-    ENGINE_DEBUG << "Engine::calculateSpectrum" << QThread::currentThread()
-                 << "count" << m_count << "pos" << position << "len" << m_spectrumBufferLength
-                 << "spectrumAnalyser.isReady" << m_spectrumAnalyser.isReady();
 
     if (m_spectrumAnalyser.isReady()) {
         m_spectrumBuffer = QByteArray::fromRawData(m_buffer.constData() + position - m_bufferPosition,
