@@ -51,7 +51,6 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "spectrum.h"
 #include "spectrumanalyser.h"
 #include "wavfile.h"
 

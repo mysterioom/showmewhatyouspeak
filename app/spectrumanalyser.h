@@ -51,12 +51,47 @@
 #ifndef SPECTRUMANALYSER_H
 #define SPECTRUMANALYSER_H
 
+
 #include <QByteArray>
 #include <QObject>
 #include <QVector>
-#include "frequencyspectrum.h"
-#include "spectrum.h"
+#include <qglobal.h>
 #include "FFTRealFixLenParam.h"
+#include "fftreal_wrapper.h" // For FFTLengthPowerOfTwo
+#include "frequencyspectrum.h"
+#include "spectrumanalyser.h"
+#include "utils.h"
+
+//-----------------------------------------------------------------------------
+// Constants
+//-----------------------------------------------------------------------------
+
+// Number of audio samples used to calculate the frequency spectrum
+const int    SpectrumLengthSamples  = PowerOfTwo<FFTLengthPowerOfTwo>::Result;
+
+// Number of bands in the frequency spectrum
+const int    SpectrumNumBands       = 22;
+
+const qreal  SpectrumLowFreq        = 0.0; // Hz
+const qreal  SpectrumHighFreq       = 11000; // Hz
+
+// Waveform window size in microseconds
+const qint64 WaveformWindowDuration = 500 * 1000;
+
+// Length of waveform tiles in bytes
+// Ideally, these would match the QAudio*::bufferSize(), but that isn't
+// available until some time after QAudio*::start() has been called, and we
+// need this value in order to initialize the waveform display.
+// We therefore just choose a sensible value.
+const int   WaveformTileLength      = 4096;
+
+// Fudge factor used to calculate the spectrum bar heights
+const qreal SpectrumAnalyserMultiplier = 0.15;
+
+// Disable message timeout
+const int   NullMessageTimeout      = -1;
+
+
 
 QT_FORWARD_DECLARE_CLASS(QAudioFormat)
 QT_FORWARD_DECLARE_CLASS(QThread)

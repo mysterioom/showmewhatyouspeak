@@ -51,7 +51,7 @@
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
-#include "spectrum.h"
+#include "spectrumanalyser.h"
 #include <QDialog>
 #include <QAudioDeviceInfo>
 
