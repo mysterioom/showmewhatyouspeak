@@ -12,10 +12,6 @@
 #include "spectrumanalyser.h"
 #include "utils.h"
 
-//-----------------------------------------------------------------------------
-// Constants
-//-----------------------------------------------------------------------------
-
 // Number of audio samples used to calculate the frequency spectrum
 const int    SpectrumLengthSamples  = PowerOfTwo<FFTLengthPowerOfTwo>::Result;
 
@@ -29,10 +25,6 @@ const qreal  SpectrumHighFreq       = 11000; // Hz
 const qint64 WaveformWindowDuration = 500 * 1000;
 
 // Length of waveform tiles in bytes
-// Ideally, these would match the QAudio*::bufferSize(), but that isn't
-// available until some time after QAudio*::start() has been called, and we
-// need this value in order to initialize the waveform display.
-// We therefore just choose a sensible value.
 const int   WaveformTileLength      = 4096;
 
 // Fudge factor used to calculate the spectrum bar heights
@@ -41,8 +33,6 @@ const qreal SpectrumAnalyserMultiplier = 0.15;
 // Disable message timeout
 const int   NullMessageTimeout      = -1;
 
-
-
 QT_FORWARD_DECLARE_CLASS(QAudioFormat)
 QT_FORWARD_DECLARE_CLASS(QThread)
 
@@ -50,10 +40,6 @@ class FFTRealWrapper;
 
 class SpectrumAnalyserThreadPrivate;
 
-/**
- * Implementation of the spectrum analysis which can be run in a
- * separate thread.
- */
 class SpectrumAnalyserThread : public QObject
 {
     Q_OBJECT
@@ -89,10 +75,6 @@ private:
 
 };
 
-/**
- * Class which performs frequency spectrum analysis on a window of
- * audio samples, provided to it by the Engine.
- */
 class SpectrumAnalyser : public QObject
 {
     Q_OBJECT
@@ -102,31 +84,8 @@ public:
     ~SpectrumAnalyser();
 
 public:
-
-    /*
-     * Calculate a frequency spectrum
-     *
-     * \param buffer       Audio data
-     * \param format       Format of audio data
-     *
-     * Frequency spectrum is calculated asynchronously.  The result is returned
-     * via the spectrumChanged signal.
-     *
-     * An ongoing calculation can be cancelled by calling cancelCalculation().
-     *
-     */
     void calculate(const QByteArray &buffer, const QAudioFormat &format);
-
-    /*
-     * Check whether the object is ready to perform another calculation
-     */
     bool isReady() const;
-
-    /*
-     * Cancel an ongoing calculation
-     *
-     * Note that cancelling is asynchronous.
-     */
     void cancelCalculation();
 
 signals:
