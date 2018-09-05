@@ -13,18 +13,14 @@ class Spectrograph;
 class ToneGeneratorDialog;
 class Waveform;
 
-QT_BEGIN_NAMESPACE
 class QAction;
 class QAudioFormat;
 class QLabel;
 class QMenu;
 class QPushButton;
-QT_END_NAMESPACE
 
-/**
- * Main application widget, responsible for connecting the various UI
- * elements to the Engine.
- */
+
+
 class MainWidget : public QWidget
 {
     Q_OBJECT

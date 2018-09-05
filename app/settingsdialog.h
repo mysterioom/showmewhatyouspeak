@@ -14,11 +14,6 @@ class QGridLayout;
 class QLabel;
 QT_END_NAMESPACE
 
-
-const int MinimumThresholdOfSilence = -60; //dB
-const int MaximumThresholdOfSilence = -10; //dB
-const int InitThresholdOfSilence = -30; //dB
-
 /**
  * Dialog used to control settings such as the audio input / output device
  * and the windowing function.
@@ -37,6 +32,9 @@ public:
     const QAudioDeviceInfo &inputDevice() const { return m_inputDevice; }
     const QAudioDeviceInfo &outputDevice() const { return m_outputDevice; }
     const int &thresholdSilence() {return m_thresholdSilence; }
+    const int &minimumThresholdOfSilence() {return m_minimumThresholdOfSilence; }
+    const int &maximumThresholdOfSilence() {return m_maximumThresholdOfSilence; }
+    const int &initThresholdOfSilence() {return m_initThresholdOfSilence; }
 
 private slots:
     void inputDeviceChanged(int index);
@@ -52,6 +50,10 @@ private:
     QSlider *m_thresholdOfSilenceSlider;
     QLabel *m_thresholdOfSilenceValueLabel;
     int m_thresholdSilence;
+
+    const int m_minimumThresholdOfSilence = -60; //dB
+    const int m_maximumThresholdOfSilence = -10; //dB
+    const int m_initThresholdOfSilence = -30; //dB
 };
 
 #endif // SETTINGSDIALOG_H

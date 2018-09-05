@@ -144,8 +144,6 @@ void MainWidget::createUi()
 
     windowLayout->addWidget(m_infoMessage);
 
-    // Spectrograph and level meter
-
     QScopedPointer<QHBoxLayout> analysisLayout(new QHBoxLayout);
     analysisLayout->addWidget(m_spectrograph);
     windowLayout->addLayout(analysisLayout.data());
@@ -158,8 +156,6 @@ void MainWidget::createUi()
     infoLayout->addWidget(m_silence);
     windowLayout->addLayout(infoLayout.data());
     infoLayout.take();
-
-    // Button panel
 
     const QSize buttonSize(30, 30);
 
@@ -197,14 +193,12 @@ void MainWidget::createUi()
     QWidget *buttonPanel = new QWidget(this);
     buttonPanel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     buttonPanel->setLayout(buttonPanelLayout.data());
-    buttonPanelLayout.take(); // ownership transferred to buttonPanel
+    buttonPanelLayout.take();
 
     QScopedPointer<QHBoxLayout> bottomPaneLayout(new QHBoxLayout);
     bottomPaneLayout->addWidget(buttonPanel);
     windowLayout->addLayout(bottomPaneLayout.data());
-    bottomPaneLayout.take(); // ownership transferred to windowLayout
-
-    // Apply layout
+    bottomPaneLayout.take();
 
     setLayout(windowLayout);
 }

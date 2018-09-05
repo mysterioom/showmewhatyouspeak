@@ -16,25 +16,10 @@ public:
         :   frequency(0.0), amplitude(0.0), phase(0.0), clipped(false)
         { }
 
-        /**
-         * Frequency in Hertz
-         */
-        qreal frequency;
-
-        /**
-         * Amplitude in range [0.0, 1.0]
-         */
-        qreal amplitude;
-
-        /**
-         * Phase in range [0.0, 2*PI]
-         */
-        qreal phase;
-
-        /**
-         * Indicates whether value has been clipped during spectrum analysis
-         */
-        bool clipped;
+        qreal frequency; // in Hz
+        qreal amplitude; // in range [0.0, 1.0]
+        qreal phase; //in range [0.0, 2*PI]
+        bool clipped; //whether value has been clipped during spectrum analysis
     };
 
     typedef QVector<Element>::iterator iterator;

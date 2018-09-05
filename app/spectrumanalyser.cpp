@@ -40,8 +40,6 @@ void SpectrumAnalyserThread::calculateSpectrum(const QByteArray &buffer,
                                                 int inputFrequency,
                                                 int bytesPerSample)
 {
-    Q_ASSERT(buffer.size() == m_numSamples * bytesPerSample);
-
     const char *ptr = buffer.constData();
     for (int i=0; i<m_numSamples; ++i) {
         const qint16 pcmSample = *reinterpret_cast<const qint16*>(ptr);
@@ -101,8 +99,6 @@ void SpectrumAnalyser::calculate(const QByteArray &buffer,
                          const QAudioFormat &format)
 {
     if (isReady()) {
-        Q_ASSERT(isPCMS16LE(format));
-
         const int bytesPerSample = format.sampleSize() * format.channelCount() / 8;
 
         m_state = Busy;
@@ -112,7 +108,6 @@ void SpectrumAnalyser::calculate(const QByteArray &buffer,
                                   Q_ARG(QByteArray, buffer),
                                   Q_ARG(int, format.sampleRate()),
                                   Q_ARG(int, bytesPerSample));
-        Q_ASSERT(b);
         Q_UNUSED(b);
 
     }
@@ -131,7 +126,6 @@ void SpectrumAnalyser::cancelCalculation()
 
 void SpectrumAnalyser::calculationComplete(const FrequencySpectrum &spectrum, int baseFrequency)
 {
-    Q_ASSERT(Idle != m_state);
     if (Busy == m_state){
         emit spectrumChanged(spectrum);
         emit baseFrequencyChanged(baseFrequency);

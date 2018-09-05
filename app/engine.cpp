@@ -11,7 +11,7 @@
 #include <QSet>
 #include <QThread>
 
-const qint64 BufferDurationUs       = 60 * 1000000; //60 sekund
+const qint64 BufferDurationUs       = 60 * 1000000; //60 seconds
 const int    NotifyIntervalMs       = 100;
 const int    LevelWindowUs          = 0.1 * 1000000;
 
@@ -212,7 +212,6 @@ void Engine::audioStateChanged(QAudio::State state)
         stopPlayback();
     } else {
         if (QAudio::StoppedState == state) {
-            // Check error
             QAudio::Error error = QAudio::NoError;
             switch (m_mode) {
             case QAudio::AudioInput:
@@ -307,7 +306,7 @@ bool Engine::initialize()
             m_audioOutput->setCategory(m_audioOutputCategory);
         }
     } else {
-      emit errorMessage(tr("No common input / output format found"), "");
+      emit errorMessage(tr("No input / output format found"), "");
     }
 
     return result;
@@ -439,9 +438,6 @@ void Engine::calculateLevel(qint64 position, qint64 length)
 
 void Engine::calculateSpectrum(qint64 position)
 {
-    Q_ASSERT(position + m_spectrumBufferLength <= m_bufferPosition + m_dataLength);
-    Q_ASSERT(0 == m_spectrumBufferLength % 2); // constraint of FFT algorithm
-
     if (m_spectrumAnalyser.isReady()) {
         m_spectrumBuffer = QByteArray::fromRawData(m_buffer.constData() + position - m_bufferPosition,
                                                    m_spectrumBufferLength);
