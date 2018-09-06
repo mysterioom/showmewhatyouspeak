@@ -26,8 +26,6 @@ public:
     typedef QVector<Element>::const_iterator const_iterator;
 
     void reset();
-
-    int count() const;
     Element& operator[](int index);
     const Element& operator[](int index) const;
     iterator begin();

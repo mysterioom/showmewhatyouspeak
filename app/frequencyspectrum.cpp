@@ -13,11 +13,6 @@ void FrequencySpectrum::reset()
         *i = Element();
 }
 
-int FrequencySpectrum::count() const
-{
-    return m_elements.count();
-}
-
 FrequencySpectrum::Element &FrequencySpectrum::operator[](int index)
 {
     return m_elements[index];

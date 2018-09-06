@@ -25,8 +25,6 @@ Spectrograph::~Spectrograph()
 
 void Spectrograph::setParams(int numBars, qreal lowFreq, qreal highFreq)
 {
-    Q_ASSERT(numBars > 0);
-    Q_ASSERT(highFreq > lowFreq);
     m_bars.resize(numBars);
     m_lowFreq = lowFreq;
     m_highFreq = highFreq;
@@ -35,7 +33,6 @@ void Spectrograph::setParams(int numBars, qreal lowFreq, qreal highFreq)
 
 void Spectrograph::timerEvent(QTimerEvent *event)
 {
-    Q_ASSERT(event->timerId() == m_timerId);
     Q_UNUSED(event);
     killTimer(m_timerId);
     m_timerId = NullTimerId;
@@ -108,7 +105,6 @@ void Spectrograph::paintEvent(QPaintEvent *event)
 
         for (int i=0; i<numBars; ++i) {
             const qreal value = m_bars[i].value;
-            Q_ASSERT(value >= 0.0 && value <= 1.0);
             QRect bar = rect();
             bar.setLeft(rect().left() + leftPaddingWidth + (i * (gapWidth + barWidth)));
             bar.setWidth(barWidth);
@@ -142,17 +138,13 @@ void Spectrograph::spectrumChanged(const FrequencySpectrum &spectrum)
 
 int Spectrograph::barIndex(qreal frequency) const
 {
-    Q_ASSERT(frequency >= m_lowFreq && frequency < m_highFreq);
     const qreal bandWidth = (m_highFreq - m_lowFreq) / m_bars.count();
     const int index = (frequency - m_lowFreq) / bandWidth;
-    if (index <0 || index >= m_bars.count())
-        Q_ASSERT(false);
     return index;
 }
 
 QPair<qreal, qreal> Spectrograph::barRange(int index) const
 {
-    Q_ASSERT(index >= 0 && index < m_bars.count());
     const qreal bandWidth = (m_highFreq - m_lowFreq) / m_bars.count();
     return QPair<qreal, qreal>(index * bandWidth, (index+1) * bandWidth);
 }

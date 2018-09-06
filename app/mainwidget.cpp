@@ -2,7 +2,7 @@
 #include "mainwidget.h"
 #include "settingsdialog.h"
 #include "spectrograph.h"
-#include "utils.h"
+#include "helpers.h"
 
 #include <QLabel>
 #include <QPushButton>
@@ -103,7 +103,6 @@ void MainWidget::errorMessage(const QString &heading, const QString &detail)
 
 void MainWidget::timerEvent(QTimerEvent *event)
 {
-    Q_ASSERT(event->timerId() == m_infoMessageTimerId);
     Q_UNUSED(event)
     killTimer(m_infoMessageTimerId);
     m_infoMessageTimerId = NullTimerId;

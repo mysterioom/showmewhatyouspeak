@@ -19,6 +19,8 @@ SettingsDialog::SettingsDialog(
     ,   m_thresholdOfSilenceSlider(new QSlider(Qt::Horizontal, this))
     ,   m_thresholdOfSilenceValueLabel(new QLabel(this))
 {
+    setWindowTitle(tr("Settings"));
+
     QVBoxLayout *dialogLayout = new QVBoxLayout(this);
     Q_UNUSED(thresholdSilence);
 

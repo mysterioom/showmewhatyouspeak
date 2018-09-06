@@ -10,7 +10,7 @@
 #include "fftreal_wrapper.h" // For FFTLengthPowerOfTwo
 #include "frequencyspectrum.h"
 #include "spectrumanalyser.h"
-#include "utils.h"
+#include "helpers.h"
 
 // Number of audio samples used to calculate the frequency spectrum
 const int    SpectrumLengthSamples  = PowerOfTwo<FFTLengthPowerOfTwo>::Result;
@@ -27,7 +27,7 @@ const qint64 WaveformWindowDuration = 500 * 1000;
 // Length of waveform tiles in bytes
 const int   WaveformTileLength      = 4096;
 
-// Fudge factor used to calculate the spectrum bar heights
+// fudge factor used to calculate the spectrum bar heights
 const qreal SpectrumAnalyserMultiplier = 0.15;
 
 // Disable message timeout
@@ -37,8 +37,6 @@ QT_FORWARD_DECLARE_CLASS(QAudioFormat)
 QT_FORWARD_DECLARE_CLASS(QThread)
 
 class FFTRealWrapper;
-
-class SpectrumAnalyserThreadPrivate;
 
 class SpectrumAnalyserThread : public QObject
 {

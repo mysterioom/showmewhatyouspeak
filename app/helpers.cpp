@@ -1,5 +1,5 @@
 #include <QAudioFormat>
-#include "utils.h"
+#include "helpers.h"
 
 qint64 audioDuration(const QAudioFormat &format, qint64 bytes)
 {

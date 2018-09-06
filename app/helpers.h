@@ -1,5 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef HELPERS_H
+#define HELPERS_H
 
 #include <QtCore/qglobal.h>
 #include <QDebug>
@@ -8,6 +8,7 @@ QT_FORWARD_DECLARE_CLASS(QAudioFormat)
 
 const int    AudioSampleRate        = 22050; //Hz
 const int    AudioSampleSize         = 16; //bit
+const int    AudioChannelsCount      = 1; //recorded in mono
 
 qint64 audioDuration(const QAudioFormat &format, qint64 bytes);
 qint64 audioLength(const QAudioFormat &format, qint64 microSeconds);
@@ -23,4 +24,4 @@ template<> class PowerOfTwo<0>
 { public: static const int Result = 1; };
 
 
-#endif // UTILS_H
+#endif // HELPERS_H

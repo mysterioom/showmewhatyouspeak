@@ -1,5 +1,5 @@
 #include "spectrumanalyser.h"
-#include "utils.h"
+#include "helpers.h"
 #include "fftreal_wrapper.h"
 
 #include <qmath.h>
@@ -43,7 +43,7 @@ void SpectrumAnalyserThread::calculateSpectrum(const QByteArray &buffer,
     const char *ptr = buffer.constData();
     for (int i=0; i<m_numSamples; ++i) {
         const qint16 pcmSample = *reinterpret_cast<const qint16*>(ptr);
-        // Scale down to range [-1.0, 1.0]
+        // scale down to range [-1.0, 1.0]
         const DataType realSample = pcmToReal(pcmSample);
         const DataType windowedSample = realSample * m_window[i];
         m_input[i] = windowedSample;
