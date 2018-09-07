@@ -32,3 +32,13 @@ FrequencySpectrum::iterator FrequencySpectrum::end()
 {
     return m_elements.end();
 }
+
+FrequencySpectrum::const_iterator FrequencySpectrum::begin() const
+{
+    return m_elements.begin();
+}
+
+FrequencySpectrum::const_iterator FrequencySpectrum::end() const
+{
+    return m_elements.end();
+}

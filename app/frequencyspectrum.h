@@ -26,6 +26,8 @@ public:
     const Element& operator[](int index) const;
     iterator begin();
     iterator end();
+    const_iterator begin() const;
+    const_iterator end() const;
 
 private:
     QVector<Element> m_elements;
