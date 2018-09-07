@@ -15,15 +15,9 @@ qint64 audioLength(const QAudioFormat &format, qint64 microSeconds)
    return result;
 }
 
-const qint16  PCMS16MaxValue     =  32767;
 const quint16 PCMS16MaxAmplitude =  32768; // minimum to -32768
 
 qreal pcmToReal(qint16 pcm)
 {
     return qreal(pcm) / PCMS16MaxAmplitude;
-}
-
-qint16 realToPcm(qreal real)
-{
-    return real * PCMS16MaxValue;
 }

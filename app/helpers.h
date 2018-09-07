@@ -15,8 +15,6 @@ qint64 audioLength(const QAudioFormat &format, qint64 microSeconds);
 
 qreal pcmToReal(qint16 pcm);
 
-qint16 realToPcm(qreal real);
-
 template<int N> class PowOfTwo
 { public: static const int Result = PowOfTwo<N-1>::Result * 2; };
 
