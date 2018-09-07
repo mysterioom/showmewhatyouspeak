@@ -3,10 +3,6 @@
 
 #include <QtCore/QVector>
 
-/**
- * Represents a frequency spectrum as a series of elements, each of which
- * consists of a frequency, an amplitude and a phase.
- */
 class FrequencySpectrum {
 public:
     FrequencySpectrum(int numPoints = 0);
@@ -30,8 +26,6 @@ public:
     const Element& operator[](int index) const;
     iterator begin();
     iterator end();
-    const_iterator begin() const;
-    const_iterator end() const;
 
 private:
     QVector<Element> m_elements;

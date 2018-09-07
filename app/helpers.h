@@ -17,10 +17,10 @@ qreal pcmToReal(qint16 pcm);
 
 qint16 realToPcm(qreal real);
 
-template<int N> class PowerOfTwo
-{ public: static const int Result = PowerOfTwo<N-1>::Result * 2; };
+template<int N> class PowOfTwo
+{ public: static const int Result = PowOfTwo<N-1>::Result * 2; };
 
-template<> class PowerOfTwo<0>
+template<> class PowOfTwo<0>
 { public: static const int Result = 1; };
 
 
